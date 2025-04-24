@@ -19,8 +19,8 @@ npm run build
     }
 ```
 
-These Arguments : Change as your proper path
-"/lcoal/path/to/install/you/want/cli.js"
+These Arguments : Change as your proper path  
+"/lcoal/path/to/install/you/want/cli.js"  
 "/path/to/save/tracing/result/file"
 
 # Caution!!
