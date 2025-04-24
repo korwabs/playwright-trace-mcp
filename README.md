@@ -1,3 +1,32 @@
+# For Local Setting (Claude Desktop)
+
+```bash
+cd /lcoal/path/to/install/you/want
+git clone https://github.com/korwabs/playwright-trace-mcp.git
+npm install
+npm run build
+```
+
+```json
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "/lcoal/path/to/install/you/want/cli.js",
+        "--trace",
+        "--trace-dir",
+        "/path/to/save/tracing/result/file"
+      ]
+    }
+```
+
+These Arguments : Change as your proper path
+"/lcoal/path/to/install/you/want/cli.js"
+"/path/to/save/tracing/result/file"
+
+# Caution!!
+
+IGNORE BELOW GUIDE (npm pulishing is not yet)
+
 # Playwright Trace MCP
 
 Playwright Trace MCP is a Model Context Protocol (MCP) server that provides browser automation capabilities using [Playwright](https://playwright.dev/). This server adds trace viewer and video recording functionality to record and analyze browser interactions. It enables LLMs (Large Language Models) to interact with web pages through structured accessibility snapshots, without requiring screenshots or visual models.
@@ -43,9 +72,7 @@ npx @playwright/trace-mcp
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/trace-mcp@latest"
-      ]
+      "args": ["@playwright/trace-mcp@latest"]
     }
   }
 }
@@ -111,10 +138,7 @@ This mode is useful for background or batch operations.
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/trace-mcp@latest",
-        "--headless"
-      ]
+      "args": ["@playwright/trace-mcp@latest", "--headless"]
     }
   }
 }
@@ -129,10 +153,7 @@ To use the video recording feature, use the `--record-video` flag:
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/trace-mcp@latest",
-        "--record-video"
-      ]
+      "args": ["@playwright/trace-mcp@latest", "--record-video"]
     }
   }
 }
@@ -148,7 +169,8 @@ To specify the video directory path:
       "args": [
         "@playwright/trace-mcp@latest",
         "--record-video",
-        "--video-dir", "./my-videos"
+        "--video-dir",
+        "./my-videos"
       ]
     }
   }
@@ -164,10 +186,7 @@ To enable trace recording functionality, use the `--trace` flag:
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/trace-mcp@latest",
-        "--trace"
-      ]
+      "args": ["@playwright/trace-mcp@latest", "--trace"]
     }
   }
 }
@@ -183,8 +202,9 @@ To customize trace recording options:
       "args": [
         "@playwright/trace-mcp@latest",
         "--trace",
-        "--trace-dir", "./my-traces",
-        "--trace-screenshots", 
+        "--trace-dir",
+        "./my-traces",
+        "--trace-screenshots",
         "--trace-snapshots"
       ]
     }
@@ -254,10 +274,7 @@ To use Vision Mode, add the `--vision` flag when starting the server:
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "@playwright/record-mcp@latest",
-        "--vision"
-      ]
+      "args": ["@playwright/record-mcp@latest", "--vision"]
     }
   }
 }
@@ -268,17 +285,17 @@ Vision Mode works best with computer use models that are able to interact with e
 ## Programmatic Usage with Custom Transports
 
 ```javascript
-import http from 'http';
+import http from "http";
 
-import { createServer } from '@playwright/trace-mcp';
-import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
+import { createServer } from "@playwright/trace-mcp";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
 http.createServer(async (req, res) => {
   // ...
 
   // Creates a headless Playwright Record MCP server with SSE transport
   const mcpServer = await createServer({ headless: true, record: true });
-  const transport = new SSEServerTransport('/messages', res);
+  const transport = new SSEServerTransport("/messages", res);
   await mcpServer.connect(transport);
 
   // ...
@@ -288,16 +305,19 @@ http.createServer(async (req, res) => {
 ## Snapshot-based Interactions
 
 - **browser_snapshot**
+
   - Description: Capture accessibility snapshot of the current page, this is better than screenshot
   - Parameters: None
 
 - **browser_click**
+
   - Description: Perform click on a web page
   - Parameters:
     - `element` (string): Human-readable element description used to obtain permission to interact with the element
     - `ref` (string): Exact target element reference from the page snapshot
 
 - **browser_drag**
+
   - Description: Perform drag and drop between two elements
   - Parameters:
     - `startElement` (string): Human-readable source element description used to obtain the permission to interact with the element
@@ -306,6 +326,7 @@ http.createServer(async (req, res) => {
     - `endRef` (string): Exact target element reference from the page snapshot
 
 - **browser_hover**
+
   - Description: Hover over element on page
   - Parameters:
     - `element` (string): Human-readable element description used to obtain permission to interact with the element
@@ -323,11 +344,13 @@ http.createServer(async (req, res) => {
 ## Video Recording Tools
 
 - **browser_video_enable**
+
   - Description: Enable video recording for the browser session
   - Parameters:
     - `directory` (string, optional): Directory to save the video files (default: mcp_videos)
 
 - **browser_video_get_path**
+
   - Description: Get the path of the current video recording
   - Parameters: None
 
@@ -339,6 +362,7 @@ http.createServer(async (req, res) => {
 ## Trace Viewer Tools
 
 - **browser_trace_start**
+
   - Description: Start recording a trace of browser interactions
   - Parameters:
     - `directory` (string, optional): Directory to save trace files (default: mcp_traces)
@@ -347,6 +371,7 @@ http.createServer(async (req, res) => {
     - `snapshots` (boolean, optional): Whether to capture DOM snapshots (default: true)
 
 - **browser_trace_stop**
+
   - Description: Stop recording trace and save it to a file
   - Parameters:
     - `path` (string, optional): Path to save the trace file (default: directory/name.zip from trace_start)
@@ -356,10 +381,11 @@ http.createServer(async (req, res) => {
   - Parameters:
     - `path` (string): Path to the trace file to open
     - `port` (number, optional): Port to run the Trace Viewer on (default: 9322)
-    
+
 ## Scroll Tools
 
 - **browser_scroll**
+
   - Description: Scroll the page by a specified amount
   - Parameters:
     - `x` (number, optional): Horizontal scroll amount in pixels (default: 0)
@@ -367,6 +393,7 @@ http.createServer(async (req, res) => {
     - `behavior` (string, optional): Scroll behavior ('auto' or 'smooth', default: 'auto')
 
 - **browser_scroll_to_element**
+
   - Description: Scroll to bring a specific element into view
   - Parameters:
     - `element` (string): Human-readable description of the target element
@@ -376,6 +403,7 @@ http.createServer(async (req, res) => {
     - `inline` (string, optional): Horizontal alignment ('start', 'center', 'end', 'nearest', default: 'nearest')
 
 - **browser_scroll_to_position**
+
   - Description: Scroll to an absolute position on the page
   - Parameters:
     - `x` (number): Horizontal position in pixels
@@ -392,33 +420,33 @@ http.createServer(async (req, res) => {
 
 ```javascript
 // 기본 스크롤 - 페이지 아래로 500픽셀 스크롤
-await mcpServer.invoke('browser_scroll', {
-  y: 500
+await mcpServer.invoke("browser_scroll", {
+  y: 500,
 });
 
 // 부드러운 스크롤 효과 사용
-await mcpServer.invoke('browser_scroll', {
+await mcpServer.invoke("browser_scroll", {
   y: 500,
-  behavior: 'smooth'
+  behavior: "smooth",
 });
 
 // 특정 요소로 스크롤 (먼저 스냅샷 캡처 필요)
-await mcpServer.invoke('browser_snapshot');
-await mcpServer.invoke('browser_scroll_to_element', {
-  element: '상품 설명 섹션',
-  ref: 'element-ref-123'
+await mcpServer.invoke("browser_snapshot");
+await mcpServer.invoke("browser_scroll_to_element", {
+  element: "상품 설명 섹션",
+  ref: "element-ref-123",
 });
 
 // 특정 위치로 스크롤
-await mcpServer.invoke('browser_scroll_to_position', {
+await mcpServer.invoke("browser_scroll_to_position", {
   x: 0,
-  y: 1500
+  y: 1500,
 });
 
 // 페이지 전체 자동 스크롤 (긴 페이지의 모든 콘텐츠 로드)
-await mcpServer.invoke('browser_auto_scroll', {
-  distance: 200,  // 각 스크롤 단계의 거리
-  delay: 100      // 각 스크롤 사이의 지연 시간(ms)
+await mcpServer.invoke("browser_auto_scroll", {
+  distance: 200, // 각 스크롤 단계의 거리
+  delay: 100, // 각 스크롤 사이의 지연 시간(ms)
 });
 ```
 
@@ -426,42 +454,42 @@ await mcpServer.invoke('browser_auto_scroll', {
 
 ```javascript
 // Start video recording
-await mcpServer.invoke('browser_video_enable', {
-  directory: './mcp_videos'
+await mcpServer.invoke("browser_video_enable", {
+  directory: "./mcp_videos",
 });
 
 // Start tracing
-await mcpServer.invoke('browser_trace_start', {
-  directory: './mcp_traces',
-  name: 'my-trace',
+await mcpServer.invoke("browser_trace_start", {
+  directory: "./mcp_traces",
+  name: "my-trace",
   screenshots: true,
-  snapshots: true
+  snapshots: true,
 });
 
 // Perform browser navigation
-await mcpServer.invoke('browser_navigate', {
-  url: 'https://example.com'
+await mcpServer.invoke("browser_navigate", {
+  url: "https://example.com",
 });
 
 // Interact with the page
-const snapshot = await mcpServer.invoke('browser_snapshot');
+const snapshot = await mcpServer.invoke("browser_snapshot");
 // Find elements in the snapshot...
 
 // Stop tracing and save
-await mcpServer.invoke('browser_trace_stop', {
-  path: './mcp_traces/my-trace.zip'
+await mcpServer.invoke("browser_trace_stop", {
+  path: "./mcp_traces/my-trace.zip",
 });
 
 // Get video path and save
-const videoPath = await mcpServer.invoke('browser_video_get_path');
-await mcpServer.invoke('browser_video_save', {
-  filename: 'my-recording.mp4'
+const videoPath = await mcpServer.invoke("browser_video_get_path");
+await mcpServer.invoke("browser_video_save", {
+  filename: "my-recording.mp4",
 });
 
 // View trace in Playwright Trace Viewer
-await mcpServer.invoke('browser_trace_view', {
-  path: './mcp_traces/my-trace.zip',
-  port: 9322
+await mcpServer.invoke("browser_trace_view", {
+  path: "./mcp_traces/my-trace.zip",
+  port: 9322,
 });
 ```
 
@@ -484,12 +512,14 @@ await mcpServer.invoke('browser_trace_view', {
 To set up a development environment for Playwright Trace MCP, follow these steps:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/korwabs/playwright-trace-mcp.git
    cd playwright-trace-mcp
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
@@ -497,28 +527,32 @@ To set up a development environment for Playwright Trace MCP, follow these steps
 3. **Building the project**:
 
    The project uses TypeScript and needs to be compiled. The build process is configured to use the locally installed TypeScript compiler. To build the project:
+
    ```bash
    npm run build
    ```
 
    **Troubleshooting Build Issues**:
-   
+
    If you encounter issues with the TypeScript compiler not being found, you may need to ensure the local TypeScript package is properly installed:
+
    ```bash
    # Remove node_modules (optional, if you suspect corrupted packages)
    rm -rf node_modules
-   
+
    # Reinstall dependencies
    npm install
    ```
 
    If you still face issues with the build command, you can directly use the TypeScript compiler from node_modules:
+
    ```bash
    # Using the local TypeScript compiler directly
    node ./node_modules/typescript/bin/tsc
    ```
 
 4. **Running tests**:
+
    ```bash
    npm test
    ```
@@ -544,18 +578,20 @@ To set up a development environment for Playwright Trace MCP, follow these steps
 ### Common Development Tasks
 
 1. **Adding a new tool**:
+
    - Create a new file in `src/tools/`
    - Export tool implementations using the `defineTool` factory
    - Import and add the tool to the tool arrays in `src/index.ts`
 
 2. **Testing locally**:
+
    ```bash
    # Build the project
    npm run build
-   
+
    # Link the package locally
    npm link
-   
+
    # Use the linked package
    npx @playwright/trace-mcp
    ```
