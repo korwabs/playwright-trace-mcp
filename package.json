@@ -1,0 +1,69 @@
+{
+  "name": "@playwright/trace-mcp",
+  "version": "0.0.1",
+  "description": "Playwright MCP with trace viewer and video recording capabilities",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/korwabs/playwright-trace-mcp.git"
+  },
+  "keywords": [
+    "playwright",
+    "trace",
+    "record",
+    "mcp"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "author": {
+    "name": "WABS Corporation"
+  },
+  "contributors": [
+    "Microsoft Corporation",
+    "WABS Corporation"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "node build.js",
+    "lint": "eslint .",
+    "update-readme": "node utils/update-readme.js",
+    "watch": "node ./node_modules/typescript/bin/tsc --watch",
+    "test": "playwright test",
+    "ctest": "playwright test --project=chrome",
+    "ftest": "playwright test --project=firefox",
+    "wtest": "playwright test --project=webkit",
+    "clean": "rm -rf lib",
+    "npm-publish": "npm run clean && npm run build && npm run test && npm publish"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "commander": "^13.1.0",
+    "playwright": "1.53.0-alpha-1745357020000",
+    "yaml": "^2.7.1",
+    "zod-to-json-schema": "^3.24.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
+    "@playwright/test": "1.53.0-alpha-1745357020000",
+    "@stylistic/eslint-plugin": "^3.0.1",
+    "@types/node": "^22.13.10",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "@typescript-eslint/utils": "^8.26.1",
+    "eslint": "^9.19.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-notice": "^1.0.0",
+    "typescript": "^5.8.3"
+  },
+  "bin": {
+    "mcp-server-playwright": "cli.js"
+  }
+}
